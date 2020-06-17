@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function computerPlay(){
+            let choice;
+            switch(Math.floor(Math.random() * (3) + 1)){
+                case 1:
+                    choice = "rock";
+                    break;
+                case 2:
+                    choice = "paper";
+                    break;
+                case 3: 
+                    choice = "scissors";
+                    break;
+                default:
+                    choice = "dynamite";
+            }
+            return choice;
+        }
+
+        function playRound(playerSelection, computerSelection){
+            playerSelection = playerSelection.toLowerCase().trim();
+            switch(playerSelection){
+                case "rock":
+                    if(computerSelection == "scissors"){
+                        return "You Win! Rock smashes Scissors";
+                    } else if(computerSelection == "rock"){
+                        return "Draw! Rock clinks against Rock";
+                    }
+                    else{
+                        return "You Lose! Paper wraps Rock"
+                    }
+                    break;
+                case "paper":
+                    if(computerSelection == "rock"){
+                        return "You Win! Paper wraps Rock";
+                    } else if(computerSelection == "paper"){
+                        return "Draw! Paper rubs against Paper";
+                    }
+                    else{
+                        return "You Lose! Scissors cut Paper"
+                    }
+                    break;
+                case "scissors":
+                    if(computerSelection == "paper"){
+                        return "You Win! Scissors cut Paper";
+                    } else if(computerSelection == "scissors"){
+                        return "Draw! Scissors clang against Scissors";
+                    }
+                    else{
+                        return "You Lose! Rock smashes Scissors"
+                    }
+                    break;
+                default: 
+                    return "Player didn't make a valid choice!"
+            }
+        }
+
+        function game(){
+            let playerSelection;
+            let play = false;
+            do {
+                playerSelection = window.prompt("Enter Rock, Paper, or Scissors:");
+                alert(playRound(playerSelection, computerPlay()));
+                play = window.confirm("Play again?");
+            } while(play);
+        }
+        game();
+    </script>
+</body>
+</html>
