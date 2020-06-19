@@ -3,9 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
+    <main class="row">
+        <h1 id="final-result"></h1>
+        <section class="scores row">
+            <div class="score" id="player">
+                <h2>Player</h2>
+                <p id="player-score">0</p>
+            </div>
+            <div class="score" id="computer">
+                <h2>Computer</h2>
+                <p id="computer-score">0</p>
+            </div>
+        </section>
+        <h1>Click a button to play!</h1>
+        <section class="buttons row">
+            <button class="btn play" id="rock">Rock</button>
+            <button class="btn play" id="paper">Paper</button>
+            <button class="btn play" id="scissors">Scissors</button>
+        </section>
+        <section class="results">
+            <h2 class="result"></h2>
+        </section>
+        <button class="btn reset hidden">Play Again?</button>
+        
+    </main>
     <script>
         function computerPlay(){
             let choice;
@@ -26,35 +51,41 @@
         }
 
         function playRound(playerSelection, computerSelection){
-            playerSelection = playerSelection.toLowerCase().trim();
+            round++;
             switch(playerSelection){
                 case "rock":
                     if(computerSelection == "scissors"){
+                        pScore++;
                         return "You Win! Rock smashes Scissors";
                     } else if(computerSelection == "rock"){
                         return "Draw! Rock clinks against Rock";
                     }
                     else{
+                        cScore++;
                         return "You Lose! Paper wraps Rock"
                     }
                     break;
                 case "paper":
                     if(computerSelection == "rock"){
+                        pScore++;
                         return "You Win! Paper wraps Rock";
                     } else if(computerSelection == "paper"){
                         return "Draw! Paper rubs against Paper";
                     }
                     else{
+                        cScore++;
                         return "You Lose! Scissors cut Paper"
                     }
                     break;
                 case "scissors":
                     if(computerSelection == "paper"){
+                        pScore++;
                         return "You Win! Scissors cut Paper";
                     } else if(computerSelection == "scissors"){
                         return "Draw! Scissors clang against Scissors";
                     }
                     else{
+                        cScore++;
                         return "You Lose! Rock smashes Scissors"
                     }
                     break;
@@ -63,16 +94,53 @@
             }
         }
 
-        function game(){
-            let playerSelection;
-            let play = false;
-            do {
-                playerSelection = window.prompt("Enter Rock, Paper, or Scissors:");
-                alert(playRound(playerSelection, computerPlay()));
-                play = window.confirm("Play again?");
-            } while(play);
-        }
-        game();
+        const playBtns = document.querySelectorAll('.play');
+
+        playBtns.forEach((button)=>{
+            button.addEventListener('click', (e)=>{
+                let finRes = document.querySelector('#final-result');
+                finRes.textContent = "";
+                let result = playRound(e.target.id, computerPlay());
+                
+                const playerScore = document.querySelector('#player-score');
+                const computerScore = document.querySelector('#computer-score');
+                playerScore.textContent = pScore;
+                computerScore.textContent = cScore;
+                
+                const res = document.querySelector('.result');
+                res.textContent = result;
+
+                if(round == 5){
+                    if(pScore > cScore){
+                        finRes.textContent = "Player wins best out of 5!";
+                    } else{
+                        finRes.textContent = "Computer wins best out of 5!";
+                    }
+                    resetBtn.classList.toggle('hidden');
+                }
+            })
+        })
+
+        const resetBtn = document.querySelector('.reset');
+
+        resetBtn.addEventListener('click', (e)=>{
+            round = 0;
+            pScore = 0;
+            cScore = 0;
+            const playerScore = document.querySelector('#player-score');
+            const computerScore = document.querySelector('#computer-score');
+            playerScore.textContent = pScore;
+            computerScore.textContent = cScore;
+            const res = document.querySelector('.result');
+            res.textContent = "";
+            const finRes = document.querySelector('#final-result');
+            finRes.textContent = "";
+            resetBtn.classList.toggle('hidden');
+        })
+
+        let round = 0;
+        let pScore = 0;
+        let cScore = 0;
     </script>
 </body>
 </html>
